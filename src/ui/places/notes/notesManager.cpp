@@ -1,0 +1,78 @@
+#include "notesManager.h"
+
+#if NOTES_APP
+
+bool goingUp = false;
+void noteSelected() {
+    if(lastMenuSelected == NOTES_CONNECT_KBD) {
+        hostBleNotifyCallback = hostBleKeyboardNotify;
+        goingUp = true;
+        switchBluetoothHostScanner();
+    } else if(lastMenuSelected == NOTES_NEW) {
+        uint64_t unixTime = getUnixTime(timeRTCLocal);
+        String filePath = String(NOTES_DIR) + "/" + unixToDate(unixTime) + " " + getHourMinuteUnix(unixTime);
+        if(fsFileExists(filePath) == false) {
+            LittleFS.open(filePath, "w", true);
+            goingUp = true;
+            initNotesManager();
+        } else {
+            debugLog("This note exists with this time");
+        }
+    } else {
+        // TODO: check name if it is a file
+        goingUp = true;
+        switchNotes();
+    }
+}
+
+void initNotesManager() {
+    if(goingUp == false) {
+        saveCpuSpeed();
+        setCpuSpeed(maxSpeed);
+    }
+    goingUp = false;
+    if(fsFileExists(NOTES_DIR) == false) {
+        fsCreateDir(NOTES_DIR);
+    }
+
+    uint16_t count = fsItemsInDir(NOTES_DIR) + 2;
+
+    entryMenu *entry = new entryMenu[count];
+    if(bleClientConnected == false) {
+        entry[0] = {NOTES_CONNECT_KBD, "", noteSelected};
+    } else {
+        entry[0] = {String(NOTES_CONNECTED) + hostBleClientName, "", NULL};
+    }
+    entry[1] = {NOTES_NEW, "", noteSelected};
+
+    File root = LittleFS.open(NOTES_DIR);
+    File file = root.openNextFile();
+    uint16_t c = 2;
+    while (file)
+    {
+        if (!file.isDirectory())
+        {
+            String fileName = String(file.name());
+            entry[c] = {fileName, "", noteSelected};
+            c++;
+        }
+        file = root.openNextFile();
+    }
+    root.close();
+
+    initMenu(entry, count, NOTES_TITLE);
+}
+
+void loopNotesManager() {
+    loopMenu();
+}
+
+void exitNotesManager() {
+    // When fully exit only
+    if(goingUp == false) {
+        hostBleNotifyCallback = NULL;
+        hostBleDeInitEverything();
+        restoreCpuSpeed();
+    }
+}
+#endif

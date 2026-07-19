@@ -1,0 +1,137 @@
+[![](https://dcbadge.limes.pink/api/server/6PUmRXZRGD)](https://discord.gg/6PUmRXZRGD)
+
+<h1 align="center">
+  InkWatchy
+</h1>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/848177ae-2931-4a7a-bb6a-09255235c6c0" alt="02-demo-10mb" width=200px height=200px />
+</p>
+<p align="center">
+A <b>firmware</b> written from the ground up for the <a href="https://watchy.sqfmi.com">watchy</a> and now also <a href="https://github.com/Szybet/Yatchy">yatchy</a>
+</p>
+<p align="center">
+Getting <a href="https://github.com/Szybet/InkWatchy/tree/master/components/rusty/inkrusty">rusty</a>🦀 and better looking with <a href="https://slint.dev">slint</a>
+</p>
+  
+### [Demo video previews here](https://github.com/Szybet/InkWatchy/wiki/Demo-videos)
+  
+## User features
+- Easy to install [demo](https://github.com/Szybet/InkWatchy/wiki/Trying-out-the-demo-firmware) (no compiling!)
+- [Modular and configurable](https://github.com/Szybet/InkWatchy/blob/master/src/defines/templates/gifnoc-template.h), a lot - if you disable a thing, it's not being compiled, it's like it was never there
+- A lot of [watchfaces](https://github.com/Szybet/InkWatchy/wiki/Watchfaces)
+- Language Support: No perf/binary compromise: fully-validated EN/PL + less-tested DE/SK/IT
+- All the regular goodies you would expect from a firmware: timezones, time drift compensation, NTP sync etc. (in one form or another)
+- Full weather info via open meteo api in charts, 16 day weather forecast, 5 days of air quality + on watchfaces
+- Calendar show of events, their time and description from an ICS file (So any calendar should sync)
+- Alarms
+  - Basically unlimited ammount of them
+  - Quick alarms setting
+  - Pomodoro timer
+- A book reader
+   - With pages changable by moving your hand
+   - Support for many books
+- Interactive watchface by using watchface modules (Apps which are shown on the watchface directly).
+    - Bitcoin module, with a "Big" mode to be truly a "bitclock"
+    - A simple network module
+    - A small conway game of life module
+    - Image gallery module
+    - Calendar module, to view the nearest event
+    - Book module, to view the book text all the time
+    - Alarm module, to see when the next alarm rings
+    - Api module, to send button presses over the network (experimental)
+- Debug menus to check on things on the fly (for example, a 3D demo of the accelerometer axis, to check if it works)
+- Battery life features:
+   - Configurable wake up every x minutes at night, at default it's between 23-06 every 45 minutes
+   - A menu to manually, or after certain battery percantage drop enable these features:
+      - Disable wake up - The watch will sleep until you press a button, this extremely improves battery life
+      - Disable all vibrations - The vibration motor is heavy for the battery
+- A "vault" which allows to save encrypted images to the watchy and view them if provided the correct PIN. All generated dynamically via a script. Uses AES128 cbc/ecb. Example use is a backup phone book, bitcoin key backup in the form of a QR code
+- Games / Fun
+   - Blockchy, a tetris like game
+   - Snake (Written in rust!)
+   - Pong game
+   - Jumper game
+   - Dice app, with 3D animation
+   - Maze game, Paint - controller by accelerometer
+   - Conway game of life
+   - Small video player
+   - [BLE game controller](https://github.com/Szybet/InkWatchy/wiki/Demo-videos#ble-game-controller)
+- Experimental heart rate monitor (Just a proof of concept, works best on Yatchy)
+<details> <summary>Baiky app - Navigation & speed via BLE from your phone (Click for details)</summary>
+
+https://github.com/user-attachments/assets/3d48897d-3a77-451f-aa51-28c9be33d1fc
+
+A weekend project and a weekend feature, so it looks like it looks, but works well and does the job, further notes:
+- the app is not open source & available to the public (The InkWatchy side of code is) for the simple reason that BLE sucks and I don't feel like supporting every device out there, works for me. If you really want it, well:
+  - **I won't help anyone with issues with the app, even if you get it by the ways below, you can report the issue, I may fix it, but I don't promise anything**
+  - Yatchy owners can request it and I will share it, no questions asked
+  - Discord server regulars, InkWatchy contributors too
+  - Some donations (Not only to me, but to some nonprofit organisations too, specified when the topic appears)
+
+</details>
+
+<details> <summary>Notes via BLE keyboard (Click for details)</summary>
+
+https://github.com/user-attachments/assets/e3c0ac6c-c742-4acc-8b5e-61f1d838352d
+
+Experimental, but works for me
+
+</details>
+
+- Reset cause shower. If your battery will be the cause of a reset, you will be informed about it on boot.
+- Stuck button detection & error screen. Perfect when assembling the case or designing a new one
+- ~~I integrated https://github.com/risinek/esp32-wifi-penetration-tool to this firmware as a service. I won't provide support for it or give any advice how to use it. Use for your own responsibility, don't do illegall stuff. Seriously.~~
+- ~~https://github.com/ckcr4lyf/EvilAppleJuice-ESP32 too. the same story as above.~~ <sub>Those 2 options were removed because I updated the build system and didn't bother to make it work with it, with some cmake you should be able to easily re-add those features, I you can't use cmake, then you shouldn't probably use either of those features anyway</sub>
+
+## Devices supported
+Supported devices:
+- [Yatchy](https://github.com/Szybet/Yatchy)
+- Watchy 2.0
+- Watchy 3.0 thanks to the community :)
+- Watchy 1.0, 1.5 too but less used, less tested
+
+## Easy to install demo, Compiling, Some instructions, Further informations
+Don't try anything by yourself without the wiki, you will probably fail.
+
+Head out to the [wiki](https://github.com/Szybet/InkWatchy/wiki)
+
+## Sister projects
+- https://github.com/Szybet/WatchySourcingHub
+- https://github.com/Szybet/watchy-scom
+- https://github.com/Szybet/Yatchy
+
+## Questions / Contact
+Create a github issue or get in touch with me on <a href="https://discord.gg/6PUmRXZRGD">*atchy community</a> discord server
+
+or via matrix: @szybet:matrix.org
+
+<details>
+<summary><h2>Outdated demos</h2></summary>
+Speed is messed up because of recording.
+
+### Demo of 1.0
+https://github.com/user-attachments/assets/91d169da-298a-425a-859c-2c9bc7fb6cf7
+
+### Demo of version 0.4
+https://github.com/Szybet/InkWatchy/assets/53944559/0c85d516-ff50-4440-9351-32780107e998
+
+### demo of version 0.1
+https://www.youtube.com/watch?v=gFOCqalJidQ
+
+</details>
+
+## Some credits
+- [Can in a hoodie](https://www.youtube.com/@cat_in_a_hoodie_27) - Many awesome graphics, the logo
+- C4nn0n - Testing a lot for the watchy v3 and beyond
+- Glowy The Glow bug - For finding bugs, bugs bugs bugs bugs bugs
+- [izzylaif](https://github.com/izzylaif) - Who did the "Fine, I will do it myself" move, respect
+- [picarica](https://github.com/picarica) - Calendar improvements, many bugs reported, and more :D
+- [invpt](https://github.com/invpt) - Huge thanks for pointing out the direction for a potential fix for screen ghosting, I easily have spend 2 weeks on it ;o 
+- [Jason2866](https://github.com/Jason2866) - Help with solving platformio hackery
+- [GuruSR](https://github.com/GuruSR/Watchy_GSR) - I used some of his awesome libraries and looked at the code for how the watchy hardware should be handled. Also answered a few questions on discord. Thanks!
+- [Prokuon](https://github.com/Prokuon/watchy-starfield/) - I really liked the design of this watchface and almost coppied it. Thanks! - well the code is completly diffrent
+
+and many other contributors, whom you can see on the panel on the right
+
+Thanks!

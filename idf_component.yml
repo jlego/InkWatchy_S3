@@ -1,0 +1,5 @@
+dependencies:
+  rusty:
+    path: components/rusty
+  tamp:
+    path: components/tamp

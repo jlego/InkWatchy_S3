@@ -1,0 +1,649 @@
+#include "manager.h"
+#include "rtcMem.h"
+
+int currentPlaceIndex = 0;
+int menuSelectedTree[PLACE_TREE_MAX_DEPTH] = {0};
+bool wasBacked = false;
+void (*exitFuncGlob)() = nullptr; // Executed when a place is exiting and it was requested
+
+bool disabledBacking = false;
+
+void initManager()
+{
+    rM.placeTree[0] = FIRST_PLACE;
+}
+
+// in managerLaunchFunc, sleep and in manager long back.
+void executeExitFunc()
+{
+    if (exitFuncGlob != nullptr)
+    {
+        void (*exitFuncGlobTmp)() = exitFuncGlob;
+        exitFuncGlob = nullptr;
+        exitFuncGlobTmp();
+    }
+    else
+    {
+        debugLog("No exit function supplied");
+    }
+}
+
+void managerLaunchFunc(UiPlace place, void (*initFunc)(), void (*loopFunc)(), void (*exitFunc)() = nullptr)
+{
+    if (rM.currentPlace == place)
+    {
+        // debugLog("Executing loop function?");
+        if (loopFunc != nullptr)
+        {
+            loopFunc();
+        }
+    }
+    else
+    {
+        // debugLog("rM.currentPlace: " + String(rM.currentPlace));
+        // debugLog("place: " + String(place));
+        rM.currentPlace = place;
+        if (wasBacked == false)
+        {
+            if (currentPlaceIndex - 1 >= 0)
+            {
+                debugLog("Saving to index " + String(currentPlaceIndex - 1) + " menu index currentMenuItem:" + String(currentMenuItem));
+                menuSelectedTree[currentPlaceIndex - 1] = currentMenuItem;
+                // currentMenuItem = menuSelectedTree[currentPlaceIndex]; // Hehe no, it goes to another menu on the same level
+                currentMenuItem = 0;
+            }
+        }
+        else
+        {
+            debugLog("Restoring menu of tree index " + String(currentPlaceIndex) + " value " + String(menuSelectedTree[currentPlaceIndex]));
+            currentMenuItem = menuSelectedTree[currentPlaceIndex];
+            wasBacked = false;
+        }
+
+        debugLog("Executing exit func in managerLaunchFunc");
+        executeExitFunc();
+        if (initFunc != nullptr)
+        {
+            debugLog("Executing init function");
+            dis->fillScreen(SCWhite);
+            initFunc();
+        }
+        else
+        {
+            debugLog("No init function supplied");
+        }
+        if (exitFunc != nullptr)
+        {
+            debugLog("Saving exit func");
+            exitFuncGlob = exitFunc;
+        }
+        else
+        {
+            debugLog("No exit function supplied");
+        }
+    }
+}
+
+void loopManager()
+{
+    // We want watchface to be able to use
+    if (currentPlaceIndex != 0)
+    {
+        buttonState backButton = useButtonBack();
+        if (backButton != None)
+        {
+            debugLog("Button is back, manager got it");
+
+            if (backButton == Back || backButton == LongBack)
+            {
+                if (disabledBacking == true)
+                {
+                    debugLog("Ignoring back button");
+                    loopManager();
+                    return;
+                }
+            }
+
+            if (currentPlaceIndex > 0 && (backButton == Back || backButton == LongBack))
+            {
+                if (backButton == Back)
+                {
+                    rM.placeTree[currentPlaceIndex] = NoPlace;
+                    currentPlaceIndex -= 1;
+                    wasBacked = true;
+                }
+                else if (backButton == LongBack)
+                {
+                    for (int i = 1; i < PLACE_TREE_MAX_DEPTH; i++)
+                    {
+                        rM.placeTree[i] = NoPlace;
+                    }
+#if LONG_BACK_FULL_REFRESH
+                    debugLog("Forcing full update because of long back button");
+                    dUChange = true;
+                    rM.updateCounter = FULL_DISPLAY_UPDATE_QUEUE;
+#endif
+                    currentPlaceIndex = 0;
+                }
+                debugLog("Executing exit func in loopManager");
+                executeExitFunc();
+            }
+        }
+    }
+
+    // debugLog("Current place: " + String(rM.placeTree[currentPlaceIndex]) + " and index: " + String(currentPlaceIndex));
+    // Don't forget break...
+    switch (rM.placeTree[currentPlaceIndex])
+    {
+    case watchface:
+    {
+        managerLaunchFunc(watchface, initWatchfaceManage, loopWatchfaceManage);
+        break;
+    }
+    case mainMenu:
+    {
+        managerLaunchFunc(mainMenu, initMainMenu, loopMenu);
+        break;
+    }
+    case debugMenu:
+    {
+#if DEBUG_MENUS
+        managerLaunchFunc(debugMenu, initDebugMenu, loopMenu);
+#endif
+        break;
+    }
+    case settingsMenu:
+    {
+        managerLaunchFunc(settingsMenu, initSettingsMenu, loopMenu);
+        break;
+    }
+    case setTimeWatchPlace:
+    {
+#if SET_CLOCK_GUI
+        managerLaunchFunc(setTimeWatchPlace, initSetTimeWatch, loopSetTimeWatch, exitSetTimeWatch);
+#endif
+        break;
+    }
+    case setTimezoneUtcWatchPlace:
+    {
+#if SET_CLOCK_GUI
+        managerLaunchFunc(setTimezoneUtcWatchPlace, initSetTimezoneUtcWatch, loopMenu, exitSetTimezoneUtcWatch);
+#endif
+        break;
+    }
+    case setTimezoneContinentWatchPlace:
+    {
+#if SET_CLOCK_GUI
+        managerLaunchFunc(setTimezoneContinentWatchPlace, initSetTimezoneContinentWatch, loopMenu);
+#endif
+        break;
+    }
+    case setTimezoneCityWatchPlace:
+    {
+#if SET_CLOCK_GUI
+        managerLaunchFunc(setTimezoneCityWatchPlace, initSetTimezoneCityWatch, loopMenu, exitTimezoneCityWatch);
+#endif
+        break;
+    }
+    case setDateWatchPlace:
+    {
+#if SET_CLOCK_GUI
+        managerLaunchFunc(setDateWatchPlace, initSetDateWatch, loopSetDateWatch, exitSetDateWatch);
+#endif
+        break;
+    }
+    case setClockMenu:
+    {
+#if SET_CLOCK_GUI
+        managerLaunchFunc(setClockMenu, initSetClockMenu, loopMenu);
+#endif
+        break;
+    }
+    case setTimezoneMenu:
+    {
+#if SET_CLOCK_GUI
+        managerLaunchFunc(setTimezoneMenu, initSetTimezoneMenu, loopMenu);
+#endif
+        break;
+    }
+    case dailyStepsChartMenu:
+    {
+#if PRECISE_STEP_COUNTING
+        managerLaunchFunc(dailyStepsChartMenu, initDailyStepsChartMenu, loopMenu);
+#endif
+        break;
+    }
+    case generalDebug:
+    {
+#if DEBUG_MENUS
+        managerLaunchFunc(generalDebug, initGeneralDebugDisplay, loopGeneralDebugDisplay, nullptr);
+#endif
+        break;
+    }
+    case clockDebug:
+    {
+#if DEBUG_MENUS
+        managerLaunchFunc(clockDebug, initClockDebug, loopClockDebug, nullptr);
+#endif
+        break;
+    }
+    case gitDebug:
+    {
+#if DEBUG_MENUS
+        managerLaunchFunc(gitDebug, initGitDebug, nullptr, nullptr);
+#endif
+        break;
+    }
+    case accDebug:
+    {
+#if DEBUG_MENUS
+        managerLaunchFunc(accDebug, initAccDebug, loopAccDebug, exitAccDebug);
+#endif
+        break;
+    }
+    case batteryDebug:
+    {
+#if DEBUG_MENUS
+        managerLaunchFunc(batteryDebug, initBatteryDebugDisplay, loopBatteryDebugDisplay, nullptr);
+#endif
+        break;
+    }
+    case motorDebug:
+    {
+#if DEBUG_MENUS
+        managerLaunchFunc(motorDebug, initMotorDebug, loopMotorDebug, nullptr);
+#endif
+        break;
+    }
+    case wifiDebug:
+    {
+        managerLaunchFunc(wifiDebug, initWifiDebugDisplay, loopWifiDebugDisplay, nullptr);
+        break;
+    }
+    case textDialog:
+    {
+        managerLaunchFunc(textDialog, NULL, useButtonBlank);
+        break;
+    }
+    case errorDialog:
+    {
+        managerLaunchFunc(errorDialog, NULL, loopErrorScreen, exitErrorScreen);
+        break;
+    }
+    case weatherMenu:
+    {
+#if WEATHER_INFO
+        managerLaunchFunc(weatherMenu, initWeatherMenu, loopMenu);
+#endif
+        break;
+    }
+    case weatherDateMenu:
+    {
+#if WEATHER_INFO
+        managerLaunchFunc(weatherDateMenu, initWeatherDateMenu, loopMenu);
+#endif
+        break;
+    }
+    case weatherConditionMenu:
+    {
+#if WEATHER_INFO
+        managerLaunchFunc(weatherConditionMenu, initWeatherConditionMenu, loopMenu);
+#endif
+        break;
+    }
+    case airQualityDateMenu:
+    {
+#if WEATHER_INFO && WEATHER_AIR_ENABLED
+        managerLaunchFunc(airQualityDateMenu, initAirQualityDateMenu, loopMenu);
+#endif
+        break;
+    }
+    case airQualityConditionMenu:
+    {
+#if WEATHER_INFO && WEATHER_AIR_ENABLED
+        managerLaunchFunc(airQualityConditionMenu, initAirQualityConditionMenu, loopMenu);
+#endif
+        break;
+    }
+    case alarmSelectorMenu:
+    {
+#if INK_ALARMS
+        managerLaunchFunc(alarmSelectorMenu, initAlarmSelectorMenu, loopMenu, exitAlarmSelectorMenu);
+#endif
+        break;
+    }
+    case alarmEditMenu:
+    {
+#if INK_ALARMS
+        managerLaunchFunc(alarmEditMenu, initAlarmEditMenu, loopMenu, exitAlarmEditMenu);
+#endif
+        break;
+    }
+    case setTimePlace:
+    {
+#if SET_TIME_GUI
+        managerLaunchFunc(setTimePlace, initSetTime, loopSetTime, exitSetTime);
+#endif
+        break;
+    }
+    case setDatePlace:
+    {
+#if SET_DATE_GUI
+        managerLaunchFunc(setDatePlace, initSetDate, loopSetDate, exitSetDate);
+#endif
+        break;
+    }
+    case alarmEditDays:
+    {
+#if INK_ALARMS
+        managerLaunchFunc(alarmEditDays, initAlarmEditDaysMenu, loopMenu, exitAlarmEditDaysMenu);
+#endif
+        break;
+    }
+    case pomodoroMenu:
+    {
+#if INK_ALARMS && POMODORO_ALARM
+        managerLaunchFunc(pomodoroMenu, initPomodoroMenu, loopMenu);
+#endif
+        break;
+    }
+    case alarmRing:
+    {
+#if INK_ALARMS
+        managerLaunchFunc(alarmRing, initAlarmRing, loopAlarmRing, exitAlarmRing);
+#endif
+        break;
+    }
+    case alarmSetChooser:
+    {
+#if INK_ALARMS
+        managerLaunchFunc(alarmSetChooser, initAlarmSetChooser, loopMenu);
+#endif
+        break;
+    }
+    case alarmQuick:
+    {
+#if INK_ALARMS
+        managerLaunchFunc(alarmQuick, initAlarmQuickSet, loopMenu);
+#endif
+        break;
+    }
+    case powerMenu:
+    {
+        managerLaunchFunc(powerMenu, initpowerMenu, loopMenu);
+        break;
+    }
+    case ChartPlace:
+    {
+        managerLaunchFunc(ChartPlace, NULL, useButtonBlank);
+        break;
+    }
+    case book:
+    {
+#if BOOK
+        managerLaunchFunc(book, initBook, loopBook, exitBook);
+#endif
+        break;
+    }
+    case bookSelector:
+    {
+#if BOOK
+        managerLaunchFunc(bookSelector, initBookSelector, loopMenu);
+#endif
+        break;
+    }
+    case vault:
+    {
+#if VAULT
+        managerLaunchFunc(vault, initVault, loopVault, exitVault);
+#endif
+        break;
+    }
+    case vaultImage:
+    {
+#if VAULT
+        managerLaunchFunc(imagePlace, NULL, useButtonBlank, exitVault);
+#endif
+        break;
+    }
+    case vaultMenu:
+    {
+#if VAULT
+        // TODO: generalMenuPlace? Ooh?
+        managerLaunchFunc(generalMenuPlace, NULL, loopMenu, exitVault);
+#endif
+        break;
+    }
+    case apple:
+    {
+#if APPLE_JOKE
+        managerLaunchFunc(apple, initAppleJoke, loopAppleJoke, exitAppleJoke);
+#endif
+        break;
+    }
+    case apple2:
+    {
+#if APPLE_JOKE
+        managerLaunchFunc(apple2, initAppleSour, loopAppleSour, exitAppleSour);
+#endif
+        break;
+    }
+    case calendarDateMenu:
+    {
+#if CALENDAR
+        managerLaunchFunc(calendarDateMenu, initCalendar, loopMenu);
+#endif
+        break;
+    }
+    case calendarEventMenu:
+    {
+#if CALENDAR
+        managerLaunchFunc(calendarEventMenu, initCalendar, loopMenu);
+#endif
+        break;
+    }
+    case videoPlayer:
+    {
+#if VIDEO_PLAYER
+        managerLaunchFunc(videoPlayer, initVideoPlayer, loopVideoPlayer, exitVideoPlayer);
+#endif
+        break;
+    }
+    case videoMenu:
+    {
+#if VIDEO_PLAYER
+        managerLaunchFunc(videoMenu, initVideoMenu, loopMenu);
+#endif
+        break;
+    }
+    case pong:
+    {
+#if PONG
+        managerLaunchFunc(pong, initPong, loopPong);
+#endif
+        break;
+    }
+    case paint:
+    {
+#if PAINT
+        managerLaunchFunc(paint, initPaint, loopPaint, exitPaint);
+#endif
+        break;
+    }
+    case maze:
+    {
+#if MAZE
+        managerLaunchFunc(maze, initMaze, loopMaze, exitMaze);
+#endif
+        break;
+    }
+    case tetris:
+    {
+#if TETRIS
+        managerLaunchFunc(tetris, initTetris, loopTetris, exitTetris);
+#endif
+        break;
+    }
+    case jumperGame:
+    {
+#if JUMPER
+        managerLaunchFunc(jumperGame, initJumper, loopJumper);
+#endif
+        break;
+    }
+    case snake:
+    {
+#if SNAKE
+        managerLaunchFunc(tetris, init_snake, slint_loop, slintExit);
+#endif
+        break;
+    }
+    case diceMenu:
+    {
+#if DICE
+        managerLaunchFunc(diceMenu, initDiceMenu, loopMenu);
+#endif
+        break;
+    }
+    case diceApp:
+    {
+#if DICE
+        managerLaunchFunc(diceApp, initDiceApp, loopDiceApp, exitDiceApp);
+#endif
+        break;
+    }
+    case gamesMenu:
+    {
+        managerLaunchFunc(gamesMenu, initGamesMenu, loopMenu);
+        break;
+    }
+    case credits:
+    {
+#if CREDITS
+        managerLaunchFunc(credits, initCredits, loopCredits, nullptr);
+#endif
+        break;
+    }
+    case conwayApp:
+    {
+#if CONWAY
+        managerLaunchFunc(conwayApp, initConway, loopConway, exitConway);
+#endif
+        break;
+    }
+    case partyApp:
+    {
+#if RGB_DIODE
+        managerLaunchFunc(partyApp, initParty, loopParty, exitParty);
+#endif
+        break;
+    }
+    case healthMenu:
+    {
+#if HEALTH_MENU
+        managerLaunchFunc(healthMenu, initHealthMenu, loopMenu);
+#endif
+        break;
+    }
+    case heartMonitor:
+    {
+#if HEART_MONITOR
+        managerLaunchFunc(heartMonitor, initHeartMonitor, loopHeartMonitor, exitHeartMonitor);
+#endif
+        break;
+    }
+    case baikyApp:
+    {
+#if BAIKY
+        managerLaunchFunc(baikyApp, initBaiky, loopBaiky, exitBaiky);
+#endif
+        break;
+    }
+    case notesApp:
+    {
+#if NOTES_APP
+        managerLaunchFunc(notesApp, initNotes, loopNotes, exitNotes);
+#endif
+        break;
+    }
+    case notesManager:
+    {
+#if NOTES_APP
+        managerLaunchFunc(notesManager, initNotesManager, loopNotesManager, exitNotesManager);
+#endif
+        break;
+    }
+    case bluetoothHostScanner:
+    {
+#if BLE_HOST_ENABLED
+        managerLaunchFunc(bluetoothHostScanner, initBluetoothHostScanner, loopBluetoothHostScanner, exitBluetoothHostScanner);
+#endif
+        break;
+    }
+    case blePeripheral:
+    {
+#if BLE_PERIPHERAL
+        managerLaunchFunc(blePeripheral, initBlePeripheral, loopBlePeripheral, exitBlePeripheral);
+#endif
+        break;
+    }
+    case blePeripheralMenu:
+    {
+#if BLE_PERIPHERAL
+        managerLaunchFunc(blePeripheralMenu, initBlePeripheralMenu, loopMenu);
+#endif
+        break;
+    }
+    case fileUpload:
+    {
+#if FILE_UPLOAD
+        managerLaunchFunc(fileUpload, fileUploadInit, fileUploadLoop, fileUploadExit);
+#endif
+        break;
+    }
+    case fontPreview:
+    {
+#if FONT_MENU_ENABLED
+        managerLaunchFunc(fontPreview, initFontPreview, loopFontPreview);
+#endif
+        break;
+    }
+    case fontPreviewMenu:
+    {
+#if FONT_MENU_ENABLED
+        managerLaunchFunc(fontPreviewMenu, initFontMenu, loopMenu);
+#endif
+        break;
+    }
+    case watchfaceSelector:
+    {
+        managerLaunchFunc(watchfaceSelector, watchfaceSelInit, loopMenu);
+        break;
+    }
+    case imagePlace:
+    {
+        managerLaunchFunc(imagePlace, NULL, useButtonBlank);
+        break;
+    }
+    case inputPinPlace:
+    {
+        managerLaunchFunc(inputPinPlace, initPinInput, loopPinInput, exitPinInput);
+        break;
+    }
+    case generalMenuPlace:
+    {
+        managerLaunchFunc(generalMenuPlace, NULL, loopMenu);
+        break;
+    }
+    case NoPlace:
+    {
+        debugLog("This shouldn't happen?");
+        break;
+    }
+    default:
+    {
+        debugLog("You forgot to implement a place!");
+        break;
+    }
+    }
+}

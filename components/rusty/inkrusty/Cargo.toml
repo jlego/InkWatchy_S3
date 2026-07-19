@@ -1,0 +1,42 @@
+[package]
+name = "inkrusty"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["staticlib"]
+
+[dependencies]
+mallocator = "0.1.0"
+embedded-graphics-core = "0.4.0"
+slint = { version = "=1.13.0", default-features = false, features = [
+    "compat-1-2",
+    "renderer-software",
+    "libm",
+    "unsafe-single-threaded",
+] }
+snake_lib = { git = "https://github.com/Szybet/snake-slint.git", package = "snake_lib" }
+general_page = { path = "../crates/general_page" }
+set_time = { path = "../crates/set_time", optional = true}
+set_date = { path = "../crates/set_date", optional = true }
+
+[build-dependencies]
+slint-build = "=1.13.0"
+
+[features]
+default = []
+debug = []
+snake = []
+set_time = ["dep:set_time"]
+set_date = ["dep:set_date"]
+
+[profile.release]
+strip = true
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"
+debug = 0
+debug-assertions = false
+incremental = false
+overflow-checks = false

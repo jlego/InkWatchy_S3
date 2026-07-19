@@ -1,0 +1,37 @@
+#pragma once
+
+#include "defines.h"
+
+#if SCOM_TASK_ENABLED || DEBUG
+extern std::mutex serialWrite;
+#endif
+#if DEBUG
+void initLogs();
+void logFunction(String file, int line, String func, String message);
+void logCleanup(bool serial = true, bool fs = true);
+extern bool disableFsLogging;
+#endif
+void flushLogs(); // This should be moved inside of DEBUG but the code is messed up in other places, for now leave it
+bool containsBelowChar(String str);
+void delayTask(int timeMs);
+void checkMaxMin(int *value, int max, int min = 0, bool wrapback = true);
+String strTime(time_t unixTime);
+String addZero(String str, uint8_t minimumLength);
+
+float findHighest(float *numbers, int size);
+float findLowest(float *numbers, int size);
+void sortList(float *numbers, int size);
+void concatenateFloatLists(float *sourceList1, int size1, float *sourceList2, int size2, float *destinationList);
+float precision(float f, int places);
+void setBoolMutex(std::mutex *theMutex, bool *theBool, bool boolValue);
+int betterRandom(int min, int max);
+int betterRandom(int max);
+String precisionToString(float f, int places);
+
+void setBit(uint8_t *num, uint8_t position, bool value);
+bool getBit(uint8_t num, uint8_t position);
+void toggleBit(uint8_t *num, uint8_t position);
+
+#if WATCHFACE_12H
+String convertTo12HourFormat(String time24);
+#endif

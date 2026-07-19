@@ -1,0 +1,477 @@
+#pragma once
+
+#define INKWATCHY_LANG EN // EN, PL, DE and SK | Supported watchfaces: InkField, Slate and Taychron
+
+// Watchfaces!
+// https://github.com/Szybet/InkWatchy/wiki/Watchfaces
+// Keep at least one enabled. If you bother me with a problem and the problem will be that you disabled all watchfaces, then I will credit you when implementing a future counter measure.
+#define WATCHFACE_12H 0             // Show time in 12 hour format | Supported watchfaces: InkField, Slate, Taychron, Terrain
+#define WATCHFACE_TEMP_TYPE CELSIUS // CELSIUS or FAHRENHEIT | Supported watchfaces: InkField, Slate and Taychron
+// InkField
+#define WATCHFACE_INKFIELD_SZYBET 1
+// Taychron
+#define WATCHFACE_TAYCHRON 1
+#define WATCHFACE_TAYCHRON_DATE 0 // shows date below time
+// Slate
+#define WATCHFACE_SLATE 1
+// Domain
+#define WATCHFACE_DOMAIN_DOTP 1
+// Terrain
+#define WATCHFACE_TERRAIN 0
+// Orbital watchface
+#define WATCHFACE_ORBITAL 1
+// Station watchface
+#define WATCHFACE_STATION 0
+// Shades & Analog (Code preview watchfaces)
+#define WATCHFACE_SHADES_SZYBET 1
+#define WATCHFACE_ANALOG_SHARP_SZYBET 1
+
+// GSR watchfaces
+// Because of the ways they are written (even in native watchyGSR) they will provide worse battery life than native inkwatchy watchfaces -
+// Because they write everything every minute, unlike inkwatchy watchfaces which check what needs to be rewritten
+// If you plan to write a watchface specifically for inkwatchy, don't use this compability layer, please
+// Also lp core for yatchy for those is not supported
+// Also to note, they are all ported, the original authours can be found under those links (and github / google in general):
+// All credits go to them :)
+// Expect lower quality of those watchfaces functionalities (Watchy gsr still uses openweather map, we dont, so we remove that)
+/*
+https://github.com/retroisbest/Watchy-GSR-Faces/tree/main
+https://github.com/GuruSR/Watchy_GSR/tree/master
+https://github.com/tyen901/WatchyGSR_Addon_StarfieldWatchface/#
+*/
+#define GSR_WATCHFACES 0          // General turn on off every watchface
+#define GSR_WATCHFACES_OPTIMISE 1 // Draws only every minute, not all the time, small optimisations, doesn't change much but could break things but hey
+#define GSR_STARFIELD 0
+#define GSR_STARFIELD_TIMEZONE_THING 0.0 // Hours.Minutes of your timezone (kind of UTC) - yes too lazy to automate that
+#define GSR_CLASSICS_BASICS 0
+#define GSR_CLASSICS_7SEG 0
+#define GSR_CLASSICS_DOS 0
+#define GSR_CLASSICS_POKE 0
+#define GSR_CLASSICS_STARRY 0
+#define GSR_CLASSICS_TETRIS 0
+#define GSR_CLASSICS_MAC 0
+#define GSR_CLASSICS_MARIO 0
+#define GSR_STATIONARY 0
+
+// Basics
+#define DEBUG_MENUS 1 // Includes debug menus for various things
+// Those vibrations settings are dependent on motor task priority
+#define VIBRATION_BUTTON_TIME 50      // Time in ms to the motor to vibrate after clicking a button. 0 means none
+#define VIBRATION_BUTTON_LONG_TIME 60 // This is just an addition to VIBRATION_BUTTON_TIME
+#define VIBRATION_ACTION_TIME 200     // Time in ms to the motor to vibrate when the UI receives an action
+#define VIBRATION_POWER 155           // From 1 to 255, PWM duty cycle. Too low and it can not even vibrate a little
+// Motor power multiplier
+#define VIBRATION_MULTIPLIER_OVERWRITE 0
+#define VIBRATION_MULTIPLIER 1.0
+#define STEPS_GOAL 7000
+// Precise step counting
+#define PRECISE_STEP_COUNTING 1
+#define PRECISE_STEPS_DAYS_LIMIT 10
+// Backups RTC memory to flash, so after updating the firmware (When resources weren't updated, or rtc memory wasn't changed) it will still keep data like alarms
+// Might introduce weird behaviour or crashes on a update, but it tries to avoid it.
+// Might consume a bit of battery, but that's marginal.
+// It may also increase flash usage and life, but hey, mine still works so yours will too
+// If it doesn't save something you want, add it yourself or request it
+#define RTC_MEMORY_BACKUP 0
+// 0: No rotation (0 degrees) - default
+// 1: Rotate 90 degrees clockwise
+// 2: Rotate 180 degrees
+// 3: Rotate 270 degrees clockwise
+#define SCREEN_ROTATION 0 // You DON't put here 90,180,270 BUT ONLY 1,2,3 as described above
+// Inverts the color, initially
+// Yatchy lp core will not work correctly with inverted watchface, please request this feature to work if you are an yatchy owner
+#define INITIAL_SCREEN_INVERT 0
+#define WATCHFACE_INVERT_COLORS 0 // Inverts the colors once again, but only in watchface
+
+// Remap buttons
+// This is not idiot proof, do not set 2 remaps to the same button
+// Possible values:
+/*
+BTN_REMAP_VAL_MENU
+BTN_REMAP_VAL_BACK
+BTN_REMAP_VAL_UP
+BTN_REMAP_VAL_DOWN
+*/
+/*
+For 270 degrees rotation (So for the yatchy rotated case)
+#define BTN_REMAP_MENU BTN_REMAP_VAL_DOWN
+#define BTN_REMAP_BACK BTN_REMAP_VAL_MENU
+#define BTN_REMAP_UP BTN_REMAP_VAL_BACK
+#define BTN_REMAP_DOWN BTN_REMAP_VAL_UP
+*/
+/*
+The default is this:
+#define BTN_REMAP_MENU BTN_REMAP_VAL_MENU
+#define BTN_REMAP_BACK BTN_REMAP_VAL_BACK
+#define BTN_REMAP_UP BTN_REMAP_VAL_UP
+#define BTN_REMAP_DOWN BTN_REMAP_VAL_DOWN
+*/
+#define BTN_REMAP_MENU BTN_REMAP_VAL_MENU
+#define BTN_REMAP_BACK BTN_REMAP_VAL_BACK
+#define BTN_REMAP_UP BTN_REMAP_VAL_UP
+#define BTN_REMAP_DOWN BTN_REMAP_VAL_DOWN
+
+// Timezone! So:
+// - You don't set anything, it will try to guess your timezone based on IP when syncing wifi, which will be incorrect sometimes
+// - If SET_CLOCK_GUI is enabled, you can set pure UTC timezones via GUI in settings/Clock.
+// ^If you set anything via the GUI, it will not try to gues while syncing wifi. Note that GUI won't work for Daylight / Standard time automatically.
+// ^If you set any of those options below, the option to set timezone manually via gui will not appear.
+// - You set olson, which still can be incorrect (probably won't). If this is set, there will be no more guesswork
+// - You set posix, it will overwrite everything above, no quesing or anything
+// Set this as a string of olson timezone time
+// List here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+// The "TZ" identifier in the table
+#define TIMEZONE_OLSON "" // Example value: "Europe/Warsaw"
+// Here are some example websites to get it:
+// Copy the posix timezone string table column
+// https://support.cyberdata.net/portal/en/kb/articles/010d63c0cfce3676151e1f2d5442e311
+// https://github.com/yuan910715/Esp8266_Wifi_Matrix_Clock/blob/master/posix.md
+// https://www.topyuan.top/posix
+// https://github.com/majodi/TimeZoneBuilder
+// This function overwrites the TIMEZONE_OLSON variable if it's set
+#define TIMEZONE_POSIX "" // Example value for poland: "CET-1CEST,M3.5.0,M10.5.0/3"
+
+#define MENU_LINES false             // Option to show lines between buttons in menus
+#define BUTTON_LONG_PRESS_MS 500     // Duration until long press registers in miliseconds
+#define FULL_DISPLAY_UPDATE_QUEUE 60 // Make a full display update after x of partial ones
+#define LONG_BACK_FULL_REFRESH 1     // Make a full refresh at long back button clicked
+#define WATCHDOG_TASK 1              // Wastes resources but tries to detect hangups and you can reset the watch with clicking all buttons too
+#define WATCHDOG_TASK_TIMEOUT 0      // Hangup detection, doesn't work on anything besides yatchy, probably. Idk why.
+
+// Drift & NTP & Syncing
+// Sync wifi is disabled by default because Watchy v2, watchy v3 have bad charging detection and it will drain a lot of battery before detecting it and going to sleep & disabling the wifi - only on yatchy this feature works fully correct, on others it drains more battery. If your battery drained fully, this is the first thing to disable, if that worked report it to me
+#define SYNC_WIFI 0                        // Autimatically sync wifi - only if it's being charged and after the delay below
+#define SYNC_WIFI_SINCE_SUCC 1800          // 30m
+#define SYNC_WIFI_SINCE_FAIL 600           // 10m
+#define MANUAL_NTP_OFFSET 0                // In seconds, When your ntp server is wrong
+#define SYNC_NTP_ON_CHARGING_DELAY 90000   // Sync NTP when charging every, in Ms. Default 1.5 minute
+#define VALID_PREVIOUS_SYNC_DELAY 300      // Valid minimum delay to calculate drift, below that it will be ignored. Keep in mind to keep it higher then the delay between SYNC_WIFI_SINCE_FAIL and SYNC_NTP_ON_CHARGING_DELAY
+#define WIFI_CONNECTION_TRIES 3            // Regular sync, number of tries
+#define WIFI_CONNECTION_TRIES_PERSISTENT 1 // Persistent sync (SYNC_WIFI), number of tries
+#define WIFI_SYNC_TIME 10000               // Ms, time for waiting to connect to wifi
+#define WIFI_ERROR_TIME 3000               // Ms, time for waiting when wifi failed before next try
+#define TIME_DRIFT_CORRECTION 0            // The RTC may drift, this should repair it. It basically on first ntp sync starts the measurment and on the second it ends it. I suggest disabling SYNC_WIFI because if it's triggered, it will cancel the drift calculation because its a persistent sync, it happens every few minutes. If you have a watchy V2, you should first try FORCE_INTERNAL_RTC instead of this option.
+#define TIME_DRIFT_MINIMUM_TIME 24         // Minimum amount of hours a drift calculation can go on, because measuring drift between 5 minutes will help you experience the back to the future movie. It's suggested to be minimum 24 hours.
+#define FORCE_INTERNAL_RTC 0               // If your device has an external RTC but it sucks, set this to 1
+#define FORCED_INTERNAL_RTC_QUARTZ 0       // If you forced the internal RTC and if you have an external quartz crystal, set this to 1
+#define AVOID_SLEEPING_ON_FULL_MINUTE 4    // This value shouldn't be really touched, it checks if in x seconds a full minute passess, if yes, it waits to x / 2 seconds
+#define CONNECT_TO_HIDDEN_NETWORKS 0       // This makes the wifi manager connect to hidden networks too. For some reason it takes more time and power to do so, that's why it's not on default, otherwise it should work
+#define NTP_SERVER_URL "ntp.ubuntu.com"    // Change it to something else if it doesn't work as a first step to troubleshoot. pool.ntp.org has a rate limiter apparently
+
+// Weather
+#define WEATHER_INFO 1      // Enable weather
+#define MAX_WEATHER_DAYS 16 // 16 is the max from weather api
+#define WEATHER_AIR_ENABLED 1
+#define MAX_AIR_DAYS 5  // 5 is the max pull from air-quality api, despite the website claiming max is 7
+#define WEATHER_TRIES 3 // Ammount of times to try to sync weather
+#define WEATHER_WATCHFACE_HOUR_OFFSET 1
+#define SUNRISE_SUNSET_HOUR_OFFSET 0 // (Domain watchface) Sunrise/Sunset is wrong, but everything else is fine? edit this instead.
+#define PRESSURE_HPA_MAX 1100        // 1013 is 50%
+#define PRESSURE_HPA_MIN 850
+#define VISIBILITY_M_MAX 150
+#define VISIBILITY_M_MIN 0
+#define WIND_SPEED_MAX 30 // Km/h
+#define WIND_SPEED_MIN 0
+// Moon
+#define MOON_MIN_RADIUS 56.5
+#define MOON_MAX_RADIUS 64.0
+
+// Alarms
+#define INK_ALARMS 1 // Enable alarms
+// Write the amount of minutes and the label will be done automatically in selected language
+#define QUICK_ALARM_LIST(X) \
+    X(2)                    \
+    X(5)                    \
+    X(10)                   \
+    X(15)                   \
+    X(20)                   \
+    X(25)                   \
+    X(60)                   \
+    X(90)                   \
+    X(120)                  \
+    X(180)                  \
+    X(360)                  \
+    X(480)                  \
+    X(1440)
+
+#define ALARM_DURATION_S 60        // Seconds of ringing
+#define ALARM_MOTOR_DELAY 1000     // Ms of delay for motor
+#define ALARM_MOTOR_TIME 200       // Time for motor to vibrate
+#define ALARM_WIFI_MIN_STRENGTH 60 // from 1-99, percents
+#define ALARM_WIFI_MULTIPLIER 7    // Multiplies the time if wifi connect is needed
+#define ALARM_WIFI_WIFI_QUICK_MS 1500
+#define ALARM_QUICK_ID MAX_ALARMS - 1 // Which alarm to replace for quick alarms, the default is the last one. Can't be higher than MAX_ALARMS-1
+#define ALARM_DISABLE_BACK 1          // No escaping if (wifi) alarm
+
+// Pomodoro (Using alarms, so needs them)
+#define POMODORO_ALARM 1
+#define ALARM_POMODORO_ID MAX_ALARMS - 2
+#define POMODORO_WORK_M 25          // 25
+#define POMODORO_SHORT_PAUSE_M 5    // 5
+#define POMODORO_LONG_PAUSE_M 15    // 15
+#define POMODORO_LONG_PAUSE_AFTER 4 // 4
+
+// Book things
+#define BOOK 0
+#define BOOK_ACC_SWITCHING 0
+#define BOOK_ADD_SLEEP_DELAY_MS 60000
+#define BOOK_AX_X_PAGE_CHANGE_VALUE_UP 300
+#define BOOK_AX_X_PAGE_CHANGE_VALUE_DOWN 250
+#define BOOK_AX_Z_BACK_VALUE 500
+#define BOOK_AX_Y_BACK_VALUE 500
+#define BOOK_AX_X_TOLERANCE 150
+#define BOOK_ON_EXIT_GO_PAGE_BACK 1
+#define BOOK_AXC_LINE 1
+#define BOOK_AXC_LINE_WIDTH 3
+#define BOOK_AXC_DIFFERENCE_CHANGE 15
+#define BOOK_CHARS_PER_PAGE 200 // This is dependent on the font. It must be Mono
+#define BOOK_FONT getFont("UbuntuMono10")
+
+// Conway, It will drain your battery a lot
+// And A LOT of memory
+#define CONWAY 0
+#define CONWAY_CPU_SPEED 0    // When calculating conway, increase cpu speed. This obviously increases battery usage but makes the watch faster with the conway module AND is a "maybe" fix for some resets related to watchdog
+#define CONWAY_MODULE_DEBUG 0 // speed up the module. Don't
+
+// Calendar
+#define CALENDAR 0
+// allow insecure url for calendar
+#define ALLOW_INSECURE_CAL 0
+// import only events today onwards
+#define FUTURE_ONLY 0
+// Number of future days to include in calendar
+#define CALENDAR_NEXT_DAYS 30
+// Shorter names needed
+#define CALENDAR_SPLIT_DESCRIPTION 1
+#define CALENDAR_SPLIT_DESCRIPTION_STRING "\\n"
+#define CALENDAR_SPLIT_DESCRIPTION_ARRAY_SIZE 2
+
+#define VIDEO_PLAYER 0
+
+// Menu to manually set time
+#define SET_CLOCK_GUI 1
+
+// Watchface modules
+#define MODULE_PERSISTENT 1       // Makes modules, like bitcoin not dissmissable, they will always appear and be choosen. The image module always will be shown, if you disable it will simply be an empty space
+#define MODULE_UPDATE_LIMIT_S 600 // Every x seconds, update the modules. Not every minute, like it was for now. Change it to 60 for every minute. Change it to 0 to completly disable modules updating automatically
+// Makes the module update many times and faster in full mode (charging, button wakeup etc.)
+// this consumes more BATTERY but makes the wifi module more accurate (As in, update the wifi status faster/more accurate - on yatchy really needed)
+// It's important to note that even with this, modules are optimised no to redraw so often. They will simply check more often if to redraw
+#define MODULES_FAST 0
+#define WIFI_MODULE 1
+// Bitcoin is pretty heavy on memory while syncing. If it crashes when enabled for you, some more optimisation might be needed. Create a github issue.
+#define BITCOIN_MODULE 0
+#define SMALL_BTC_MODULE 1 // At default, show the small btc module mode, if 0 show the bigger one
+#define BITCOIN_SYNC_TRIES 3
+#define CONWAY_MODULE 0                  // Conway module. to make it enabled CONWAY itself needs to be enabled
+#define CONWAY_MODULE_GRID_PERCANTAGE 50 // Percentage of initial grid filling
+
+#define BOOK_MODULE 1
+#define BOOK_MODULE_CHARS_PER_PAGE 140
+#define MODULES_OPERATING_FAST 1      // Great name for a feature... Well basically when you operate modules it won't wait for more operations, it goes to sleep. This makes it wait the value below:
+#define MODULES_WAITING_DIVISION 0.75 // Divise SLEEP_EVERY_MS through that value
+
+#define IMAGE_MODULE 1
+#define IMG_MODULE_CHANGE_EVERY_HOUR 1 // Change the image every hour
+
+#define API_MODULE 0 // With it, consider setting BUTTON_CPU_SPEED to something faster to make it faster
+
+#define EVENT_MODULE 0 // Needs the CALENDAR feature enabled, otherwise will error out
+
+#define ALARM_MODULE 1 // Needs alarm enabled
+
+// Power savings
+#define NIGHT_SLEEP_FOR_M 45 // If it's 1 it doesn't apply, In minutes
+#define NIGHT_SLEEP_AFTER_HOUR 23
+#define NIGHT_SLEEP_BEFORE_HOUR 5
+#define SLEEP_EVERY_MS 10000             // Goes to sleep timer, is resetted by button presses and other things
+#define POWER_SAVING_AFTER 40            // Turn on power saving features after a certain battery percantage.
+#define POWER_SAVING_OFF_AFTER 20        // Difference in POWER_SAVING_AFTER after which it will be turned off. Make sure POWER_SAVING_AFTER + POWER_SAVING_OFF_AFTER is not above 100
+#define LOOP_NO_SCREEN_WRITE_DELAY_MS 70 // Go to "sleep" for x ms if the device is woken up (in a menu for example) and the screen didn't update. This value is fine tuned, but if you want a faster menu, feel free to make it smaller. 225 is good for me, but a very small percent of people say it's too much, let's do 112 and be happy. Power saving with this option will do really nothing, barely anything
+#define HARDWARE_POWER_SAVINGS 1         // Like wifi modem in power saving mode
+#define EXTREME_HARDWARE_POWER_SAVINGS 0 // Tries everything what's possible to prevent brownout. Probably won't work, get a proper battery
+#define ACC_POWER_SAVING 1
+#define CPU_SPEED minimalSpeed       // Possible values: minimalSpeed, normalSpeed, maxSpeed. Obviously higher speeds decrease battery life - but it's only when you interact with the watch. This is mostly for the people who "ugh this watch is slow!". Well first, it's a watch, it should show time, any other features are battery wasters in some way and secondly you should first remove some features you don't use, most noticibly unused watchface moduls. In debug mode, this feature is overritten by DEBUG_CPU_SPEED when DEBUG
+#define BUTTON_CPU_SPEED normalSpeed // Cpu speed when it has woken up by a button
+#define SOFT_START_THINGS 1          // Slowly starts things, like wifi to prevent brownout reset.
+#define SOFT_START_DELAY_MS 4500
+#define FORCE_DISABLE_ACC 0   // 1 Means ACC is disabled, BMA530 doesn't like that, increases power consumption
+#define LED_MAX_TIME_MS 30000 // Fallback if diode is on and you forgot to turn it off (flashlight)
+
+// Vault
+#define VAULT 1
+#define VAULT_FULL_REFRESH 0
+
+// Pong
+#define PONG 1
+
+// Tetris
+#define TETRIS 1
+
+// Jumper
+#define JUMPER 1
+
+// Snake
+#define SNAKE 1
+
+// Paint, requires ACC
+#define PAINT 1
+
+// Maze game, requires ACC
+#define MAZE 1
+
+// Dice app
+#define DICE 1
+#define DICE_ANIMATION_TIME_MS 2000
+
+// Credits page
+#define CREDITS 1 // Feel free to disable it for your own usage :D
+
+// Heart monitor
+#define HEART_MONITOR 0 // Needs Acc
+
+// BLE things
+// BLE is heavy, if you enable it and the watch doesn't boot up, it means you exceeded the flash size. Disable other features to reduce flash usage
+// It's really heavy on memory too. DO NOT ENABLE BLE until you know what you want.
+// If PANIC happens with this enabled, turn it off, check again
+// If it works without it, disable other things (snake, bitcoin etc.)
+#define BLE_ENABLED 0 // Ble in general
+#define BLE_NAME "InkWatchy"
+
+// For keyboard for example
+/*
+To enable ble host, you need to edit resources/tools/buildTime/sdkconfigs/sdkconfig_general.defaults and set or change (if it's already in the file) in the # BT section:
+CONFIG_BT_BLE_ENABLED=y
+CONFIG_BT_ACL_CONNECTIONS=10
+CONFIG_BT_BLE_50_FEATURES_SUPPORTED=y
+CONFIG_BT_BLE_42_DTM_TEST_EN=y
+CONFIG_BT_BLE_42_SCAN_EN=y
+CONFIG_BT_LE_LL_RESOLV_LIST_SIZE=10
+CONFIG_BT_LE_MAX_CONNECTIONS=10
+CONFIG_GATTC_ENABLE=y
+CONFIG_BLE_SMP_ENABLE=y
+CONFIG_BT_BLE_ENABLED=y
+*/
+#define BLE_HOST_ENABLED 0
+
+// Baiky, requires BLE_ENABLED + Baiky app
+#define BAIKY 0
+
+// Notes, needs BLE_HOST_ENABLED
+#define NOTES_APP 0
+
+// Ble peripheral apps, needs BLE_ENABLED
+#define BLE_PERIPHERAL 0
+// Enable at least one of them
+#define PERIPHERAL_TOWERFALL 0
+#define PERIPHERAL_BROFORCE 0
+
+// Advanced
+#define BUTTON_TASK_DELAY 30 // In ms, lower means faster button detection but more cpu usage
+#define TIME_FOR_WATCHFACE_TO_SHOW_MS 2000
+#define ADD_BUTTON_DELAY 1.7
+#define SMALL_BUTTON_DELAY_MS 10
+#define BAT_MINIMAL_DIFFERENCE 0.02
+#define AVOID_SLEEP_USB_JTAG 1 // If your device has USB JTAG (Yatchy, I don't have a Watchy v3 to test) it will avoid going to sleep if it detects it is being used. Useful when you want to reprogram the watch but it goes to sleep
+#define BUTTON_STUCK_MS 10000
+// Experimental, consumes battery, takes longer to load everything
+// Probably won't work on devices with low memory (So everything that is not yatchy)
+#define FILESYSTEM_COMPRESSION 0
+#define DEFAULT_WATCHFACE_INDEX 0         // Do not touch if you don't know what you are doing
+#define DEFAULT_WATCHFACE_MODULE_INDEX -1 // Do not touch if you don't know what you are doing
+
+// Wifi Quick settings
+#define WIFI_QUICK_CHECK_MS 30
+#define WIFI_QUICK_MAX_MS 1250 // And half of it for tcp
+
+// Temperature readings
+// This is highly experimental, dont enable this if you dont have a reason for it, possible reasons (but you still should read the code to understand if it will help you)
+// - screen goes bad on bad temperatures
+// - you live in a volcano and need to turn the esp32 off if its above a certain temperature, or below
+// - you stream youtube and the cpu gets too hot
+#define TEMP_CHECKS_ENABLED 0
+// Enable temp checks for the watchies you specify (I have a few of them, the precision on the esp32 doesn't make sense for this feature)
+// if you enable temp checks, but the cpu is disabled, it will not try low / high temp fixes
+#define TEMP_ESP32 0   // Watchy v2 and below
+#define TEMP_ESP32S3 1 // Watchy v3
+#define TEMP_ESP32C6 1 // Yatchy
+// Those variables won't work for you, you need to edit them yourself after you see the temperature logs
+// Also everything in Celsius, americans need to metric (Or add support for burgers per inch for inkwatchy)
+// just joking :D
+#define TEMP_REAL_OFFSET 0 // On first boot a temperature will be taken, this will be added to it and that's the main temperature. Can be float
+#define TEMP_HIGHER_LIMIT 45
+#define TEMP_LOWER_LIMIT 0
+#define TEMP_REBOOT_LIMIT 70
+#define TEMP_MAX_SCREEN_FIXES 5
+// Shouldn't be changed really
+#define TEMP_MINIMUM -10
+#define TEMP_MAXIMUM 80
+
+// Wifi country
+// If your wifi connects to ghost networks, freaks out in general, try setting the wifi country for your country
+// https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/network/esp_wifi.html#_CPPv425esp_wifi_set_country_codePKcb
+#define WIFI_COUNTRY_FIX 0 // Enable this to 1 to enable the fix
+/*
+Supported country codes are "01"(world safe mode) "AT","AU","BE","BG","BR", "CA","CH","CN","CY","CZ","DE","DK","EE","ES","FI","FR","GB","GR","HK","HR","HU", "IE","IN","IS","IT","JP","KR","LI","LT","LU","LV","MT","MX","NL","NO","NZ","PL","PT", "RO","SE","SI","SK","TW","US"
+*/
+#define WIFI_COUNTRY_CODE ""
+#define WIFI_COUNTRY_FORCE false // This should be false, you can set it to true to check if something starts working
+
+// Debugging help
+#define DEBUG 0
+#define DEBUG_CPU_SPEED normalSpeed // Possible values: minimalSpeed, normalSpeed, maxSpeed
+#define EINK_COUNTER 0              // Shows a counter somewhere on screen
+#define DUMP_INIT_DEBUG 0           // If debug, shows at init init information
+#define DUMP_LOOP_DEBUG 0           // If debug, at every loop iteration dump hardware values that can change
+#define DUMP_LOOP_SOFTWARE_DEBUG 0  // If debug, at every loop iteration dump software values that can change - no sense in using it with DUMP_LOOP_DEBUG
+#define SCREEN_SLEEP_INFO 0         // Shows information on screen when the device goes to screen
+#define DRAW_DEBUG_RECT 0           // Shows rectangles where custom functions write bitmaps
+#define DUMP_LOOP_DELAY 1000        // delay in ms of dumping loop data
+#define SPEED_THROUGH_TIME 0        // Speeds up time for watchface programming
+#define NO_SYNC 0                   // If debug and this is both true, it will not try to sync up automatically
+#define VOLTAGE_PRINT_ON 0          // Prints voltage on the screen, really fast
+#define DISABLE_SLEEP 0             // Disable sleep, so it will never go to sleep. Good for SCOM_TASK. It disables the sleep logic fully
+#define DISABLE_SLEEP_PARTIAL 0     // Disable sleep, but remain the logic of it so it will return to the watchface for example
+#define PUT_LOGS_TO_SERIAL 1        // Puts logs to serial. Turn off if you want debug on the go
+#define PUT_LOGS_TO_FS 0            // Puts logs into littlefs
+#define WAIT_FOR_MONITOR 0          // If debug is enabled, waits for monitor in setup for x ms
+#define WAIT_FOR_INPUT 0            // If debug is enabled, waits for monitor until you click a button while serial monitor is opened
+#define WAIT_FOR_INPUT_MOTOR 0      // Vibrate lightly in WAIT_FOR_INPUT
+// Ah... too much allocated memory... 10 hours of my life...
+#define LOG_SERIAL_BUFFER_SIZE 1000
+#define LOG_FILE_BUFFER_SIZE 3000
+// Max file size for littlefs: 2Gb
+// https://github.com/littlefs-project/littlefs/issues/738
+#define MAX_LOG_FILE_SIZE_BYTES 100000 // 100 Kb - this means logs will maximally be stored x2 by that, because 2 files switching by each other to preserve 100 Kb of last logs, 400000 is the max in my opinion
+#define STOP_ON_RESET 1                // Stop the device until the reset is cleared, it doesn't do that if it's sure that it was a forced reset (esptool one)
+#define SERIAL_LOG_DELAY 0             // If 1, use the delay below to ensure good looking logs
+#define SERIAL_LOG_DELAY_MS 23
+#define SERIAL_BAUDRATE 115200
+#define MINIMAL_LOGS 1                 // Don't put full file paths in logs. Scom task requires this to be 0
+#define SCOM_TASK 0                    // Edit this to enable scom task. Requires DEBUG to be enabled too to be applied. It forces DEBUG_CPU_SPEED to maxSpeed
+#define FONT_PREVIEW_MENU 1            // Edit this to enable font preview menu. Requires DEBUG and DEBUG_MENUS to be enabled too
+#define NO_CHARGING 0                  // Disable detection of charging, only in debug. Also locks in the voltage (for lp core to check if the time is changed bla bla)
+#define RESET_RTC_ON_BOOT 0            // Experimental.
+#define BATTERY_TIME_DROP 0            // If enabled, if battery drops below BATTERY_TIME_DROP_VOLTAGE. Doesn't need DEBUG
+#define BATTERY_TIME_DROP_VOLTAGE 3.50 // Needs to be float
+#define LP_CORE_TEST_RUN 0             // Yatchy only, why would anyone use it aside from me?
+#define LP_CORE_SERIOUS_TEST 0
+#define DISABLE_WAKEUP_INTERRUPTS 0            // As in buttons (or yatchy gpio expander)
+#define MCP_GPIO_EXPANDER_DISABLE 0            // Bad idea, may increase power consumption
+#define MCP_GPIO_EXPANDER_DISABLE_INTERRUPTS 0 // Yatchy with no battery, huh
+#define SCREEN_CORNER_WAKEUP 0                 // writes a few pixels in the left top corner, works without DEBUG turned on
+#define I2C_SCANNER 0                          // For yatchy testing
+#define DUMP_LOOP_ACC 0                        // Needs ACC
+#define DUMP_LOOP_ACC_DIFF 0                   // Only shows diff from previous reading, experimental, look up the code
+#define SCREENSHOT_ENDPOINT 0
+#define SIMPLE_DEEP_SLEEP_TEST 0 // Only if WAIT_FOR_INPUT or WAIT_FOR_MONITOR and DEBUG. No interrupts able to wake up it. Remember to disable Usb jtag communication if it's pure uart comm, also only for yatchy
+#define YATCHY_SHIPPING_MODE 0
+
+// Battery
+#define BATTERY_MIN_VOLTAGE 3.3
+#define BATTERY_CRIT_VOLTAGE 3.15
+#define BATTERY_CHARGE_VOLTAGE 4.14
+#define BATTERY_MAX_VOLTAGE 4.18 // For calculating percentages, upper limit
+// #define BAD_BATTERY_MAX_VOLTAGE 4.00
+// #define BAD_BATTERY_CHARGE_VOLTAGE 4.05
+#define BATTERY_CHARGE_DETECTION_DIFFERENCE 0.10 // The minimum difference to detect that the battery is charging

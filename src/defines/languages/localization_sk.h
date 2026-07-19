@@ -1,0 +1,455 @@
+#pragma once
+
+// SLOVAK TRANSLATIONS (bez diakritiky)
+
+// Slate watchface weather conditions
+#define WF_S_WEATHER_CLEAR_SKY "Jasna obloha"
+#define WF_S_WEATHER_MOSTLY_CLEAR "Zvacsa jasno"
+#define WF_S_WEATHER_PARTLY_CLOUDY "Ciastocne zamracene"
+#define WF_S_WEATHER_OVERCAST "Zamracene"
+#define WF_S_WEATHER_FOG "Hmla"
+#define WF_S_WEATHER_HEAVY_FOG "Husta hmla"
+#define WF_S_WEATHER_LIGHT_DRIZZLE "Jemne mrholenie"
+#define WF_S_WEATHER_DRIZZLE "Mrholenie"
+#define WF_S_WEATHER_HEAVY_DRIZZLE "Silne mrholenie"
+#define WF_S_WEATHER_LIGHT_FREEZING "Lahke mrznutie"
+#define WF_S_WEATHER_HEAVY_FREEZING "Silne mrznutie"
+#define WF_S_WEATHER_LIGHT_RAIN "Lahky dazd"
+#define WF_S_WEATHER_RAIN "Dazd"
+#define WF_S_WEATHER_HEAVY_RAIN "Silny dazd"
+#define WF_S_WEATHER_FREEZING_RAIN "Mrznuci dazd"
+#define WF_S_WEATHER_FREEZING_HARD "Silny mrznuci dazd"
+#define WF_S_WEATHER_LIGHT_SNOW "Jemne snezenie"
+#define WF_S_WEATHER_SNOW "Snezenie"
+#define WF_S_WEATHER_HEAVY_SNOW "Silne snezenie"
+#define WF_S_WEATHER_SNOW_GRAINS "Krupy"
+#define WF_S_WEATHER_LIGHT_SHOWERS "Jemne prehanky"
+#define WF_S_WEATHER_SHOWERS "Prehanky"
+#define WF_S_WEATHER_HEAVY_SHOWERS "Silne prehanky"
+#define WF_S_WEATHER_SNOW_SHOWERS "Snehove prehanky"
+#define WF_S_WEATHER_THUNDERSTORM "Burka"
+#define WF_S_WEATHER_LIGHT_HAIL "Jemne krupobitie"
+#define WF_S_WEATHER_HEAVY_HAIL "Silne krupobitie"
+#define WF_S_WEATHER_UNKNOWN "Nezname"
+
+// Day names (abbreviated)
+#define WF_S_DAY_MON "PON"
+#define WF_S_DAY_TUE "UTO"   
+#define WF_S_DAY_WED "STR"
+#define WF_S_DAY_THU "STV"
+#define WF_S_DAY_FRI "PIA"
+#define WF_S_DAY_SAT "SOB"
+#define WF_S_DAY_SUN "NED"
+
+// Error messages
+#define WF_T_ERROR "ERR"
+#define WF_I_ERROR "ERR"         // InkField (max 3 characters)
+#define WF_I_ERROR_SHORT "ER"
+
+// Time format
+#define WF_TIME_AM "AM"
+#define WF_TIME_PM "PM"
+
+// Weather/Air Quality Selection items
+#define WEATHER_AQ_MENU_TITLE "Typ udajov"
+#define WEATHER_AQ_MENU_WEATHER "Pocasie"
+#define WEATHER_AQ_MENU_AIR_QUALITY "Kvalita vzduchu"
+#define WEATHER_AQ_NOT_AVAILABLE "Pocasie a kvalita vzduchu nie su k dispozicii"
+
+// Weather submenu items
+#define WEATHER_MENU_TEMPERATURE "Teplota"
+#define WEATHER_MENU_PRESSURE "Tlak"
+#define WEATHER_MENU_HUMIDITY "Vlhkost"
+#define WEATHER_MENU_CONDITIONS "Pocasie"
+#define WEATHER_MENU_CLOUDINESS "Oblacnost"
+#define WEATHER_MENU_WIND_SPEED "Rychlost vetra"
+#define WEATHER_MENU_WIND_GUSTS "Narazy vetra"
+#define WEATHER_MENU_VISIBILITY "Viditelnost"
+#define WEATHER_MENU_PRECIPITATION "% zrazok"
+#define WEATHER_MENU_UV_INDEX "Indice UV"
+#define WEATHER_MENU_UV_INDEX_CLEAR_SKY "UV Cielo Sereno"
+#define WEATHER_MENU_WET_BULB "Teplota Vlhk Teplomer"
+#define WEATHER_MENU_CAPE "CAPE"
+#define WEATHER_MENU_DEW_POINT "Rosny Bod"
+#define WEATHER_MENU_PRECIPITATION_AMOUNT "Zrazky"
+#define WEATHER_MENU_SNOW_DEPTH "Vyska Snehu"
+#define WEATHER_MENU_LIFTED_INDEX "Indice Sollevato"
+#define WEATHER_MENU_CONVECTIVE_INHIBITION "Konv Inhibicia"
+#define WEATHER_MENU_TERRESTRIAL_RADIATION "Zemske Zarenie"
+#define WEATHER_MENU_DIFFUSE_RADIATION "Diffuzne Zarenie"
+#define WEATHER_MENU_DIRECT_RADIATION "Primarne Zarenie"
+#define WEATHER_MENU_TOTAL_WATER_VAPOUR "Celkova Vodna Para"
+
+// Weather menu titles and messages
+#define WEATHER_SELECT_DATE "Vyber datum"
+#define WEATHER_STAT_TITLE "Pocasiove udaje"
+#define WEATHER_NOT_AVAILABLE "Pocasie nedostupne"
+#define WEATHER_DATE_WRONG "Nespravny datum?"
+#define WEATHER_CORRUPTED "Poskodene udaje"
+
+// Chart titles with time notation
+#define WEATHER_CHART_TEMP "Teplota/C"
+#define WEATHER_CHART_PRESSURE "Tlak/hPa"
+#define WEATHER_CHART_HUMIDITY "Vlhkost/%"
+#define WEATHER_CHART_CLOUDS "Oblacnost/%"
+#define WEATHER_CHART_WIND_SPEED "Vietor/km/h"
+#define WEATHER_CHART_WIND_GUSTS "Narazy/km/h"
+#define WEATHER_CHART_VISIBILITY "Viditelnost/m"
+#define WEATHER_CHART_PRECIPITATION "Zrazky/%"
+#define WEATHER_CONDITIONS_TITLE "Podmienky"
+#define WEATHER_CHART_UV_INDEX "Indice UV"
+#define WEATHER_CHART_UV_INDEX_CLEAR_SKY "UV Ciste Nebo"
+#define WEATHER_CHART_WET_BULB "Vlhk Tepl C"
+#define WEATHER_CHART_CAPE "CAPE J/kg"
+#define WEATHER_CHART_DEW_POINT "Rosny Bod C"
+#define WEATHER_CHART_PRECIPITATION_AMOUNT "Uhrn Zraz"
+#define WEATHER_CHART_SNOW_DEPTH "Vyska Snihu"
+#define WEATHER_CHART_LIFTED_INDEX "Vzn Index"
+#define WEATHER_CHART_CONVECTIVE_INHIBITION "Konv Inhib"
+#define WEATHER_CHART_TERRESTRIAL_RADIATION "Zem Zaren"
+#define WEATHER_CHART_DIFFUSE_RADIATION "Diff Zaren"
+#define WEATHER_CHART_DIRECT_RADIATION "Prim Zaren"
+#define WEATHER_CHART_TOTAL_WATER_VAPOUR "Celk Vod Para"
+
+// Air quality submenu items
+#define AIR_MENU_EUAQI "Europsky AQI"
+#define AIR_MENU_USAQI "US AQI"
+#define AIR_MENU_EU_AQI_PM2_5 "EU AQI PM2,5"
+#define AIR_MENU_EU_AQI_PM10 "EU AQI PM10"
+#define AIR_MENU_EU_AQI_NO2 "EU AQI NO2"
+#define AIR_MENU_EU_AQI_O3 "EU AQI O3"
+#define AIR_MENU_EU_AQI_SO2 "EU AQI SO2"
+#define AIR_MENU_PM2_5 "Castice PM2,5"
+#define AIR_MENU_PM10 "Castice PM10"
+#define AIR_MENU_CARBON_MONOXIDE "Oxid uhelnaty"
+#define AIR_MENU_CARBON_DIOXIDE "Oxid uhlicity"
+#define AIR_MENU_NITROGEN_DIOXIDE "Oxid dusicity"
+#define AIR_MENU_SULPHUR_DIOXIDE "Oxid siricity"
+#define AIR_MENU_OZONE "Ozon"
+#define AIR_MENU_AEROSOL_OPTICAL_DEPTH "Aerozol"
+#define AIR_MENU_DUST "Prach"
+#define AIR_MENU_METHANE "Metan"
+#define AIR_MENU_FORMALDEHYDE "Formaldehyd"
+#define AIR_MENU_GLYOXAL "Glyoxal"
+#define AIR_MENU_SEA_SALT_AEROSOL "Aerozol morskej soli"
+#define AIR_MENU_NITROGEN_MONOXIDE "Oxid dusnaty"
+#define AIR_MENU_PEROXYACYL_NITRATES "Peroxyacylnitraty"
+
+// Air quality meni titles and messages
+#define AIR_QUALITY_SELECT_DATE "Vyber datum"
+#define AIR_QUALITY_STAT_TITLE "Statistika kvality ovzdusia"
+#define AIR_QUALITY_NOT_AVAILABLE "Kvalita ovzdusia nie je dostupna"
+#define AIR_QUALITY_DATE_WRONG "Datum je nespravny?"
+#define AIR_QUALITY_CORRUPTED "Data kvality ovzdusia poskodene"
+
+// Air quality chart titles with time notation
+#define AIR_CHART_EUAQI "EU Index KP"
+#define AIR_CHART_USAQI "US Index KP"
+#define AIR_CHART_EU_AQI_PM2_5 "PM2.5/ug/m3"
+#define AIR_CHART_EU_AQI_PM10 "PM10/ug/m3"
+#define AIR_CHART_EU_AQI_NO2 "NO2/ug/m3"
+#define AIR_CHART_EU_AQI_O3 "Oxid/ug/m3"
+#define AIR_CHART_EU_AQI_SO2 "SO2/ug/m3"
+#define AIR_CHART_PM2_5 "PM2.5/ug/m3"
+#define AIR_CHART_PM10 "PM10/ug/m3"
+#define AIR_CHART_CARBON_MONOXIDE "CO/ug/m3"
+#define AIR_CHART_CARBON_DIOXIDE "CO2/ppm"
+#define AIR_CHART_NITROGEN_DIOXIDE "NO2/ug/m3"
+#define AIR_CHART_SULPHUR_DIOXIDE "SO2/ug/m3"
+#define AIR_CHART_OZONE "O3/ug/m3"
+#define AIR_CHART_AEROSOL_OPTICAL_DEPTH "AOD"
+#define AIR_CHART_DUST "Prach/ug/m3"
+#define AIR_CHART_METHANE "Metan/ug/m3"
+#define AIR_CHART_FORMALDEHYDE "CH2O/ug/m3"
+#define AIR_CHART_GLYOXAL "Glyoxal/ug/m3"
+#define AIR_CHART_SEA_SALT_AEROSOL "Morska Sol/ug/m3"
+#define AIR_CHART_NITROGEN_MONOXIDE "NO/ug/m3"
+#define AIR_CHART_PEROXYACYL_NITRATES "PAN/ug/m3"
+
+// Month names
+#define LANGUAGE_MONTH_NAMES {"JAN","FEB","MAR","APR","MAJ","JUN","JUL","AUG","SEP","OKT","NOV","DEC"}
+
+// Menu translations
+#define MENU_MAIN "Hlavne menu"
+#define MENU_CALENDAR "Kalendar"
+#define MENU_SELECT_BOOK "Vyber knihu"
+#define MENU_ALARMS "Alarmy"
+#define MENU_WEATHER "Pocasie"
+#define MENU_SETTINGS "Nastavenia"
+#define MENU_HEART_MONITOR "Monitor srdca"
+#define MENU_HEALTH "Zdravie"
+#define MENU_STEPS_PER_DAY "Kroky za den"
+#define MENU_VAULT "Trezor"
+#define MENU_WIFI_TOOL "Wifi nastroj"
+#define MENU_FILE_UPLOAD "Nahrat subor"
+#define MENU_EATING_APPLES "Jedenie jablk"
+#define MENU_SMASHING_APPLES "Drtenie jablk"
+#define MENU_GAMES "Hry"
+#define MENU_CREDITS "Kredity"
+#define MENU_WIFI "Wifi"
+#define MENU_DEBUG "Ladenie"
+#define MENU_POWER_SETTINGS "Napajanie"
+#define MENU_CHANGE_WATCHFACE "Zmena cifernika"
+#define MENU_TETRIS "Blockchy"
+#define MENU_PONG "Pong"
+#define MENU_BLE_PERIPHERAL "BLE periféria"
+#define MENU_NOTES "Poznámky"
+#define MENU_SNAKE "Had"
+#define MENU_JUMPER "Skokan"
+#define MENU_DICE "Kocka"
+#define MENU_VIDEO_PLAYER "Video prehravac"
+#define MENU_CONWAY "Conway"
+#define MENU_PARTY "Party"
+#define MENU_VIBRATIONS_DIS "Vibracie vypnute"
+#define MENU_WAKE_UP_DIS "Alarm vypnuty"
+#define MENU_POWER "Napajanie"
+
+// APP AND BOOK TRANSLATIONS
+
+// Book reader messages
+#define BOOK_NO_SELECTED "Nevybrana kniha"
+
+// Calendar messages  
+#define CALENDAR_NO_DATA "Kalendar bez dat"
+
+// BLE Scanner
+#define BLE_SCANNER_TITLE "Skenovanie BLE"
+#define BLE_SCANNER_SCANNING "Skenovanie..."
+#define BLE_SCANNER_NONE "Ziadne zariadenia"
+#define BLE_SCANNER_CHOOSE "Vyber zariadenie"
+#define BLE_SCANNER_CONNECT "Pripajanie k "
+#define BLE_SCANNER_CONNECTED "Pripojene k "
+#define BLE_SCANNER_FAILED "Nepodarilo sa pripojit k "
+
+// Notes
+#define NOTES_TITLE "Poznamky"
+#define NOTES_NEW "Nova poznamka"
+#define NOTES_DELETE "Zmazat poznamku"
+#define NOTES_CONNECT_KBD "Pripojit klavesnicu"
+#define NOTES_CONNECTED "Pripojene: "
+
+
+// HEART MONITOR TRANSLATIONS
+#define HEART_MONITOR_TITLE "Monitor srdca"
+#define HEART_MONITOR_NOT_MEDICAL "Nie na lekarske pouzitie"
+#define HEART_MONITOR_PLACE_DEVICE "Poloz zariadenie na srdce"
+#define HEART_MONITOR_CLICK_MENU "Potom stlac menu"
+#define HEART_MONITOR_START_3S "Zacne o 3s"
+#define HEART_MONITOR_TAKES_15S "Trva 15s"
+#define HEART_MONITOR_BREATHE_SLOWLY "Dychaj pomaly"
+#define HEART_MONITOR_TIME_LEFT "Zostava: "
+#define HEART_MONITOR_BPM "bpm"
+
+// Steps translations
+#define STEPS_NOT_AVAILABLE "Kroky nedostupne"
+#define STEPS_DATE_WRONG "Datum nespravny?"
+#define STEPS_CORRUPTED "Kroky poskodene"
+#define DAILY_STEPS_TITLE "Denne kroky"
+#define STEPS_CHART_TITLE "Kroky/(24h)"
+
+// VIDEO PLAYER TRANSLATIONS
+
+#define VIDEO_PLAYER_CHOOSE "Vyber video"
+
+// WATCHFACE SELECTION TRANSLATIONS
+
+#define WATCHFACE_SELECT_TITLE "Vyber cifernik"
+
+
+// TETRIS GAME TRANSLATIONS
+
+//tetris UI Labels
+#define TETRIS_LINE_CLEARS "Tetris:"
+#define TETRIS_SCORE "Skore:"
+#define TETRIS_LEVEL "Uroven:"
+#define TETRIS_CONTROLS_UP "Hore:Doprava"
+#define TETRIS_CONTROLS_DOWN "Dole:Dolava"
+#define TETRIS_GAME_OVER "KONIEC"
+
+// DEBUG MENU TRANSLATIONS
+
+// Debug menu titles
+#define DEBUG_MENU_ACC "Ladenie: Akcelerometer"
+#define DEBUG_MENU_BATTERY "Ladenie: Bateria"
+#define DEBUG_MENU_CLOCK "Ladenie: Cas"
+#define DEBUG_MENU_GIT "Ladenie: Git"
+#define DEBUG_MENU_HARDWARE "Ladenie: Hardver"
+#define DEBUG_MENU_WIFI "Ladenie: Wifi"
+#define DEBUG_MENU_MOTOR "Ladenie: Vibracie"
+
+// Debug menu items
+#define DEBUG_ITEM_CLOCK "Cas"
+#define DEBUG_ITEM_HARDWARE "Hardver"
+#define DEBUG_ITEM_BATTERY "Bateria"
+#define DEBUG_ITEM_GIT "Git"
+#define DEBUG_ITEM_ACC "Akcelerometer"
+#define DEBUG_ITEM_MOTOR "Vibracie"
+#define DEBUG_ITEM_FONT_PREVIEW "Nahlad fontu"
+
+// Accelerometer debug
+#define DEBUG_ACC_DISABLED "Deaktivovany"
+#define DEBUG_ACC_FAILED_INIT "Chyba inicializacie akcelerometra"
+#define DEBUG_ACC_DAMAGED "Akcelerometer poskodeny"
+#define DEBUG_ACC_WORKING "Akcelerometer funguje"
+#define DEBUG_ACC_CLICK_3D "3D nahlad"
+#define DEBUG_ACC_X "Akcelerometer X: "
+#define DEBUG_ACC_Y "Akcelerometer Y: "
+#define DEBUG_ACC_Z "Akcelerometer Z: "
+#define DEBUG_ACC_PURE_X "Akcelerometer ciste X: "
+#define DEBUG_ACC_PURE_Y "Akcelerometer ciste Y: "
+#define DEBUG_ACC_PURE_Z "Akcelerometer ciste Z: "
+#define DEBUG_ACC_STEPS "Kroky: "
+#define DEBUG_ACC_IC "IC: "
+#define DEBUG_ACC_ERROR_CODE "Kod chyby: "
+#define DEBUG_ACC_STATUS_CODE "Kod stavu: "
+
+// Battery debug
+#define DEBUG_BATTERY_CURRENT_V "Aktualne V: "
+#define DEBUG_BATTERY_MINIMUM_V "Minimalne V: "
+#define DEBUG_BATTERY_MAXIMUM_V "Maximalne V: "
+#define DEBUG_BATTERY_CRITICAL_V "Kriticke V: "
+#define DEBUG_BATTERY_LEVEL "Uroven %: "
+#define DEBUG_BATTERY_CHARGING "Nabija: "
+#define DEBUG_BATTERY_FULLY "Plne: "
+
+// Clock debug
+#define DEBUG_CLOCK_DRIFT_SYNCS "Drift medzi sync:"
+#define DEBUG_CLOCK_NOT_AVAILABLE "Nedostupne"
+#define DEBUG_CLOCK_LAST_SYNC "Posledny sync:"
+#define DEBUG_CLOCK_PREVIOUS_SYNC "Predch. sync:"
+#define DEBUG_CLOCK_LAST_CHARGE "Posledne nabijanie:"
+#define DEBUG_CLOCK_REMOVE_FILES "Odstranit subory hodiniek"
+#define DEBUG_CLOCK_TIMEZONE "Casova zona:"
+#define DEBUG_CLOCK_OLSON "Olson casova zona: "
+#define DEBUG_CLOCK_DRIFT_VALUES "Hodnoty driftu:"
+
+// Git debug
+#define DEBUG_GIT_COMMIT_HASH "Hash commitu:"
+#define DEBUG_GIT_BRANCH "Vetva:"
+#define DEBUG_GIT_BUILD_TIME "Cas build:"
+
+// Hardware debug
+#define DEBUG_HW_CHIP_MODEL "Model cip:"
+#define DEBUG_HW_RTC_TYPE "Typ RTC: "
+#define DEBUG_HW_USED_HEAP "Pouzita pam KB: "
+#define DEBUG_HW_CPU_TEMP "CPU teplota: "
+#define DEBUG_HW_INIT_TEMP "Init teplota: "
+
+// Motor debug
+#define DEBUG_MOTOR_VIB_DIS "Vibracie vypnute: "
+#define DEBUG_MOTOR_VIB_POWER "Zvolena sila vibracii: "
+#define DEBUG_MOTOR_VIB_TIME "Zvoleny cas vibracii: "
+#define DEBUG_MOTOR_BATT_V "Napatia baterie: "
+#define DEBUG_MOTOR_SET_POWER "Zmenit vykon"
+#define DEBUG_MOTOR_SET_TIME "Zmenit cas"
+
+// RTC Types
+#define DEBUG_RTC_UNKNOWN "Neznamy"
+#define DEBUG_RTC_DS3231 "DS3231"
+#define DEBUG_RTC_PCF8563 "PCF8563"
+#define DEBUG_RTC_INTERNAL "VN"
+#define DEBUG_RTC_INVALID "Neplatny typ"
+
+// WiFi debug
+#define DEBUG_WIFI_MAC_ADDRESS "MAC adresa: "
+#define DEBUG_WIFI_STATUS "Wifi stav: "
+#define DEBUG_WIFI_IP "IP: "
+#define DEBUG_WIFI_SSID "SSID: "
+#define DEBUG_WIFI_SIGNAL "Signal: "
+#define DEBUG_WIFI_CONNECTING "Pripajanie: "
+#define DEBUG_WIFI_ON "ON"
+#define DEBUG_WIFI_OFF "OFF"
+
+// Common debug terms
+#define DEBUG_COMMON_PERCENT "%"
+#define DEBUG_COMMON_COLON ": "
+
+// GAME AND APP TRANSLATIONS
+
+// Pong Game
+#define PONG_YOU_LOST "Prehral si!"
+
+// Jumper game
+#define JUMPER_LOST "Prehral si! Skore: "
+
+// Party app
+#define PARTY_MESSAGE "Party party"
+
+//Vault app
+#define VAULT_TITLE "Trezor"
+#define VAULT_KEY_INCORRECT "Kluc je nespravny"
+#define VAULT_EMPTY "Trezor prazdny?"
+
+// ALARM TRANSLATIONS
+
+// Alarm menu titles
+#define ALARM_MENU_EDIT_DAYS "Uprav dni"
+#define ALARM_MENU_EDIT_ALARM "Uprav alarm"
+#define ALARM_MENU_ALARMS "Alarmy"
+#define ALARM_MENU_BROWSE_ALARMS "Prezri alarmy"
+#define ALARM_MENU_QUICK_ALARMS_SET "Alarmy nastavit"
+#define ALARM_MENU_QUICK_ALARM "Alarmy"
+#define ALARM_MENU_POMODORO "Pomodoro"
+
+// Alarm edit menu items
+#define ALARM_STATUS_ENABLED "Zapnuty"
+#define ALARM_STATUS_DISABLED "Vypnuty"
+#define ALARM_LABEL_TIME "Cas: "
+#define ALARM_LABEL_ONE_TIME_ALARM "Jednorazovy"
+#define ALARM_LABEL_DAYS "Dni: "
+#define ALARM_LABEL_REQUIRE_WIFI "Vyzaduje Wifi"
+
+// Quick alarm messages
+#define ALARM_QUICK_ALERT_TITLE "Alarmy upozornenie"
+#define ALARM_QUICK_ALARM_SET_FOR "Alarm nastaveny na:"
+#define ALARM_QUICK_WILL_RING_AT "Alarm zazvoni:"
+
+// Day names (full)
+#define ALARM_DAY_MONDAY "Pondelok"
+#define ALARM_DAY_TUESDAY "Utorok"
+#define ALARM_DAY_WEDNESDAY "Streda"
+#define ALARM_DAY_THURSDAY "Stvrtok"
+#define ALARM_DAY_FRIDAY "Piatok"
+#define ALARM_DAY_SATURDAY "Sobota"
+#define ALARM_DAY_SUNDAY "Nedela"
+
+// Alarm info strings
+#define ALARM_INFO_ALL_DAYS "Vsetky dni"
+#define ALARM_INFO_NEVER "Nikdy"
+#define ALARM_INFO_ONCE ", raz"
+#define ALARM_INFO_WIFI ", wifi"
+#define ALARM_INFO_QUICK ", rychlo"
+#define ALARM_INFO_POMODORO ", pomodoro"
+
+// Pomodoro strings
+#define POMODORO_STATUS "Status: "
+#define POMODORO_RUNNING "odpocitava, "
+#define POMODORO_WORKING "pracuje, "
+#define POMODORO_PAUSE "pauza, "
+#define POMODORO_ITER "iter: "
+#define POMODORO_DISABLED "vypnute"
+#define POMODORO_RESET_TURN_OFF "Reset & Vypnutie"
+#define POMODORO_START "Start"
+
+// Set Clock GUI
+#define SETCLOCK_SET_TIME "Nastavit cas"
+#define SETCLOCK_SET_DATE "Nastavit datum"
+#define SETCLOCK_TIMEZONE_MENU "Menu casovej zony"
+#define SETCLOCK_CLOCK_SETTINGS "Nastavenia hodiniek"
+#define SETCLOCK_CURRENT_TIMEZONE "Aktualna casova zona: "
+#define SETCLOCK_CLEAR_TIMEZONE "Vymazat casovu zonu"
+#define SETCLOCK_SET_LOCATION_TIMEZONE "Nastavit casovu zonu podla polohy"
+#define SETCLOCK_SET_UTC_TIMEZONE "Nastavit UTC casovu zonu"
+#define SETCLOCK_TIMEZONE_SETTINGS "Nastavenia casovej zony"
+#define SETCLOCK_TIMEZONE_WARNING "Toto menu ignoruje letny/zimny cas a prepise vasu casovu zonu, ktora ho uz moze obsahovat.\nKliknite na tlacidlo spat pre potvrdenie"
+#define SETCLOCK_WARNING_TITLE "Upozornenie"
+#define SETCLOCK_SELECT_TIMEZONE "Vyberte casovu zonu"
+
+// Time unit translations (for automatic formatting)
+#define TIME_UNIT_MINUTE "minuta"
+#define TIME_UNIT_MINUTES "minuty"
+#define TIME_UNIT_HOUR "hodina"
+#define TIME_UNIT_HOURS "hodiny"
+#define TIME_UNIT_DAY "den"
+#define TIME_UNIT_DAYS "dni"
+#define TIME_UNIT_AND "a"
