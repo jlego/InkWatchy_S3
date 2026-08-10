@@ -87,11 +87,43 @@ get_pio_env() {
 # output=$("$esptool_path" flash_id 2>&1)
 # last_port=$(echo "$output" | grep "Serial port" | awk '{print $3}' | tail -n 1)
 # echo -n "$last_port"
+find_esptool() {
+    if command -v esptool >/dev/null 2>&1; then
+        echo "esptool"
+        return
+    fi
+    if command -v esptool.py >/dev/null 2>&1; then
+        echo "esptool.py"
+        return
+    fi
+    if [[ -f ~/.platformio/penv/bin/esptool ]]; then
+        echo "~/.platformio/penv/bin/esptool"
+        return
+    fi
+    if [[ -f ~/.platformio/tools/tool-esptoolpy/esptool ]]; then
+        echo "~/.platformio/tools/tool-esptoolpy/esptool"
+        return
+    fi
+    if [[ -f ~/.espressif/python_env/idf*/bin/esptool.py ]]; then
+        ls ~/.espressif/python_env/idf*/bin/esptool.py 2>/dev/null | head -n 1
+        return
+    fi
+    echo ""
+}
+
 extract_serial_port() {
     local esptool_path=$1
     local port
     local current_day
     current_day=$(date +%d)
+
+    local esptool_cmd=$(find_esptool)
+    if [[ -z "$esptool_cmd" ]]; then
+        echo "No esptool found in system. Using provided path: $esptool_path" >&2
+        esptool_cmd="$esptool_path"
+    else
+        echo "Found esptool: $esptool_cmd" >&2
+    fi
 
     if [[ -f /tmp/inkwatchy_port_day ]]; then
         local saved_day
@@ -105,7 +137,7 @@ extract_serial_port() {
     if [[ -f /tmp/inkwatchy_port ]]; then
         port=$(tr -d '\n' < /tmp/inkwatchy_port)
         echo "Found cached port: $port. Testing validity..." >&2
-        if "$esptool_path" --port "$port" chip_id >&2; then
+        if "$esptool_cmd" --port "$port" chip_id >&2; then
             echo "Cached port $port is valid. Choosing this port." >&2
             echo -n "$port"
             return
@@ -115,12 +147,21 @@ extract_serial_port() {
         fi
     fi
 
-    local ports=(/dev/ttyUSB* /dev/ttyACM*)
+    local ports=()
+    if [[ "$(uname)" == "Darwin" ]]; then
+        ports+=(/dev/cu.usbmodem* /dev/tty.usbmodem* /dev/cu.usbserial* /dev/tty.usbserial*)
+    else
+        ports+=(/dev/ttyUSB* /dev/ttyACM*)
+    fi
+
     local choices=()
+    local port_index=0
     for p in "${ports[@]}"; do
         if [[ -e $p ]]; then
             local desc=""
-            if command -v udevadm >/dev/null 2>&1; then
+            if [[ "$(uname)" == "Darwin" ]]; then
+                desc=$(ioreg -p IOUSB -c IOUSBDevice -k IOUSBSerialNumber -r 2>/dev/null | grep -A 5 "$(basename "$p")" | grep "USB Product Name" | awk -F'"' '{print $4}' | head -n 1)
+            elif command -v udevadm >/dev/null 2>&1; then
                 desc=$(udevadm info --query=property --name="$p" 2>/dev/null | grep -E '^ID_MODEL_FROM_DATABASE=|^ID_MODEL=' | head -n 1 | cut -d= -f2)
             fi
             if [[ -z "$desc" && -f "/sys/class/tty/${p##*/}/device/../interface" ]]; then
@@ -130,16 +171,43 @@ extract_serial_port() {
                 desc=$(cat "/sys/class/tty/${p##*/}/device/../product" 2>/dev/null)
             fi
             [[ -z "$desc" ]] && desc="Unknown USB Serial Device"
-            choices+=("$p" "$desc")
+            choices+=("$port_index" "$p - $desc")
+            port_index=$((port_index + 1))
         fi
     done
 
-    local cmd=(dialog --clear --menu "Select serial port" 15 50 5)
-    port=$("${cmd[@]}" "${choices[@]}" 2>&1 >/dev/tty)
+    if [[ ${#choices[@]} -eq 0 ]]; then
+        echo "No serial ports found. Please connect your device." >&2
+        exit 1
+    fi
 
-    echo "User manually selected port: $port" >&2
+    if command -v dialog >/dev/null 2>&1; then
+        local cmd=(dialog --clear --menu "Select serial port" 15 50 5)
+        local selection=$("${cmd[@]}" "${choices[@]}" 2>&1 >/dev/tty)
+        if [[ -z "$selection" ]]; then
+            echo "No port selected." >&2
+            exit 1
+        fi
+        port=$(echo "${choices[@]}" | tr ' ' '\n' | sed -n "$((selection * 2 + 2))p")
+    else
+        echo "Available serial ports:" >&2
+        local i=0
+        while [[ $i -lt ${#choices[@]} ]]; do
+            echo "  ${choices[$i]}. ${choices[$i+1]}" >&2
+            i=$((i + 2))
+        done
+        read -p "Enter the number of the port to use: " selection >&2
+        port=$(echo "${choices[@]}" | tr ' ' '\n' | sed -n "$((selection * 2 + 2))p")
+        if [[ -z "$port" ]]; then
+            echo "Invalid selection." >&2
+            exit 1
+        fi
+        port=$(echo "$port" | awk '{print $1}')
+    fi
+
+    echo "User selected port: $port" >&2
     echo "Checking the selected port if it's valid" >&2
-    if "$esptool_path" --port "$port" chip_id >&2; then
+    if "$esptool_cmd" --port "$port" chip_id >&2; then
         echo "Selected port $port is valid. Saving to cache and choosing this port." >&2
         echo -n "$port" > /tmp/inkwatchy_port
         echo -n "$current_day" > /tmp/inkwatchy_port_day

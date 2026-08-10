@@ -16,15 +16,25 @@ CHOICE_HEIGHT=$((NUM_OPTIONS + 1))
 TITLE="Resources options"
 MENU="Choose:"
 
-CHOICE=$(dialog --clear \
-                --backtitle "$TITLE" \
-                --title "$TITLE" \
-                --menu "$MENU" \
-                $HEIGHT $WIDTH $CHOICE_HEIGHT \
-                "${OPTIONS[@]}" \
-                2>&1 >/dev/tty)
-
-clear
+if command -v dialog >/dev/null 2>&1; then
+    CHOICE=$(dialog --clear \
+                    --backtitle "$TITLE" \
+                    --title "$TITLE" \
+                    --menu "$MENU" \
+                    $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                    "${OPTIONS[@]}" \
+                    2>&1 >/dev/tty)
+    clear
+else
+    echo "$TITLE"
+    echo "$MENU"
+    local i=0
+    while [[ $i -lt ${#OPTIONS[@]} ]]; do
+        echo "  ${OPTIONS[$i]}. ${OPTIONS[$i+1]}"
+        i=$((i + 2))
+    done
+    read -p "Enter your choice: " CHOICE
+fi
 case $CHOICE in
     1)
         cd resources/tools/ && ./generate.sh

@@ -12,7 +12,12 @@ if [[ $? -ne 0 || -z "$serial_port" ]]; then
     exit 1
 fi
 
-../other/in/esptool --port $serial_port read_flash $offset $size out/fsDump.bin
+esptool_cmd=$(find_esptool)
+if [[ -z "$esptool_cmd" ]]; then
+    esptool_cmd="../other/in/esptool"
+fi
+
+$esptool_cmd --port $serial_port read_flash $offset $size out/fsDump.bin
 
 ./in/mklittlefs -u out/fsDump out/fsDump.bin
 

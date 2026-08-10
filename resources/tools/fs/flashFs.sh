@@ -15,6 +15,11 @@ if [[ $? -ne 0 || -z "$serial_port" ]]; then
     exit 1
 fi
 
+esptool_cmd=$(find_esptool)
+if [[ -z "$esptool_cmd" ]]; then
+    esptool_cmd="../other/in/esptool"
+fi
+
 mv ./littlefs/other/yatchy-lp-program*.bin ./littlefs/other/yatchy-lp-program.bin 2>/dev/null || true
 rm -rf /tmp/littlefs
 cp -r littlefs /tmp/
@@ -66,4 +71,4 @@ fi
 # sync
 # sudo losetup -d /dev/loop84
 
-../other/in/esptool --port $serial_port write_flash $offset out/fs.bin
+$esptool_cmd --port $serial_port write_flash $offset out/fs.bin
