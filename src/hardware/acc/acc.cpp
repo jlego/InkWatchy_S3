@@ -181,13 +181,13 @@ void initAcc()
         debugLog("Acc watchy type is: " + String(type));
         debugLog("BMA version: " + String(BMA_VERSION));
 #if BMAM_4
-        if (rM.SBMA.begin4(type, BMA4_I2C_ADDR_PRIMARY, BMA_VERSION, readRegisterBMA4, writeRegisterBMA4) == false)
+        if (rM.SBMA.begin4(type, BMA4_I2C_ADDR_SECONDARY, BMA_VERSION, readRegisterBMA4, writeRegisterBMA4) == false)
         {
             debugLog("Failed to init bma");
             return;
         }
 #elif BMAM_5
-        if (rM.SBMA.begin5(type, BMA4_I2C_ADDR_PRIMARY, BMA_VERSION, readRegisterBMA5, writeRegisterBMA5) == false)
+        if (rM.SBMA.begin5(type, BMA4_I2C_ADDR_SECONDARY, BMA_VERSION, readRegisterBMA5, writeRegisterBMA5) == false)
         {
             debugLog("Failed to init bma");
             return;
